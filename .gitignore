@@ -1,0 +1,5 @@
+build/
+dd_gui.spec
+.vscode
+__pycache__/
+Pipfile.lock
