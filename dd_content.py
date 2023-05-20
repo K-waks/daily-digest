@@ -1,12 +1,14 @@
-import pandas as pd
 import csv
-import random
 import json
-import config
-from sqlalchemy import create_engine
-from urllib import request
+import random
 from datetime import datetime
+from urllib import request
 
+import pandas as pd
+from sqlalchemy import create_engine
+
+import config
+from private import key
 
 engine = create_engine(
     f"postgresql://postgres:huperetes@localhost/dailydigest"
@@ -53,7 +55,7 @@ def get_weather_forecast(
     coords={"lat": -1.286389, "lon": 36.817223}
 ):  # default location at Nairobi
     try:
-        api_key = "3d3f14b950006ba1a30d0afde4cfa6b3"
+        api_key = key
         url = f'https://api.openweathermap.org/data/2.5/forecast?lat={coords["lat"]}&lon={coords["lon"]}&appid={api_key}&units=metric'
         data = json.load(request.urlopen(url))
 
@@ -94,7 +96,6 @@ def get_devotion(devotions_file=f"{config.temp}/devotions.csv"):
 
     try:
         with open(devotions_file) as csvfile:
-
             for line in csv.reader(csvfile):
                 devotions = {"weekday": line[0], "readings": line[1]}
                 if devotions["weekday"] == datetime.today().strftime("%A"):
